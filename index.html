@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人简历 - 周发军</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0f14;
+      --bg-secondary: #141820;
+      --card: #1a1f2a;
+      --card-hover: #222836;
+      --border: #2a3142;
+      --fg: #f1f5f9;
+      --fg-muted: #94a3b8;
+      --accent: #d4a853;
+      --accent-glow: rgba(212, 168, 83, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .font-serif {
+      font-family: 'Noto Serif SC', serif;
+    }
+
+    /* Background gradient mesh */
+    .bg-mesh {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 20%, rgba(212, 168, 83, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(212, 168, 83, 0.03) 0%, transparent 70%);
+    }
+
+    /* Animated grid pattern */
+    .grid-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+      background-image: 
+        linear-gradient(rgba(212, 168, 83, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 168, 83, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(60px, 60px); }
+    }
+
+    /* Floating particles */
+    .particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    /* Card styles */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      background: var(--card-hover);
+      border-color: rgba(212, 168, 83, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px var(--accent-glow);
+    }
+
+    /* Avatar container */
+    .avatar-container {
+      position: relative;
+      width: 180px;
+      height: 180px;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--accent), transparent 60%, var(--accent));
+      animation: rotate 8s linear infinite;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    .avatar-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: var(--card);
+      padding: 4px;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: linear-gradient(135deg, #2a3142 0%, #1a1f2a 100%);
+    }
+
+    /* Section title */
+    .section-title {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+      margin-left: 16px;
+      min-width: 40px;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--border));
+      border-radius: 1px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 32px;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -29px;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 3px solid var(--bg-secondary);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    /* Info item hover */
+    .info-item {
+      transition: all 0.3s ease;
+      padding: 8px 12px;
+      margin: -8px -12px;
+      border-radius: 8px;
+    }
+
+    .info-item:hover {
+      background: rgba(212, 168, 83, 0.05);
+    }
+
+    /* Tag styles */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      background: rgba(212, 168, 83, 0.1);
+      border: 1px solid rgba(212, 168, 83, 0.2);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--accent);
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: rgba(212, 168, 83, 0.15);
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* Progress bar animation */
+    .progress-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), rgba(212, 168, 83, 0.6));
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .reveal.active .progress-fill {
+      transform: scaleX(1);
+    }
+
+    /* Print button */
+    .print-btn {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      width: 56px;
+      height: 56px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(212, 168, 83, 0.3);
+    }
+
+    .print-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 32px rgba(212, 168, 83, 0.4);
+    }
+
+    .print-btn svg {
+      width: 24px;
+      height: 24px;
+      color: var(--bg);
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .bg-mesh, .grid-pattern, .particle, .print-btn {
+        display: none !important;
+      }
+      body {
+        background: white;
+        color: black;
+      }
+      .card {
+        background: #f5f5f5;
+        border-color: #ddd;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background effects -->
+  <div class="bg-mesh"></div>
+  <div class="grid-pattern"></div>
+  <div id="particles"></div>
+
+  <!-- Main content -->
+  <main class="relative z-10 max-w-4xl mx-auto px-4 py-12 md:py-20">
+    
+    <!-- Header Section -->
+    <section class="card p-6 md:p-10 mb-8 reveal">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+        <!-- Avatar -->
+        <div class="avatar-container flex-shrink-0">
+          <div class="avatar-ring"></div>
+          <div class="avatar-inner">
+            <img src="https://github.com/Zhoufajun/myself/blob/main/avatars.png" alt="User Avatar" class="avatar-img">
+              <rect width="100" height="100" fill="url(#avatarGrad)"/>
+              <circle cx="50" cy="35" r="18" fill="#d4a853" opacity="0.8"/>
+              <ellipse cx="50" cy="85" rx="30" ry="25" fill="#d4a853" opacity="0.8"/>
+              <defs>
+                <linearGradient id="avatarGrad" x1="0" y1="0" x2="100" y2="100">
+                  <stop offset="0%" stop-color="#1a1f2a"/>
+                  <stop offset="100%" stop-color="#2a3142"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Basic Info -->
+        <div class="flex-1 text-center md:text-left">
+          <h1 class="font-serif text-4xl md:text-5xl font-bold mb-2" style="color: var(--fg);">周发军</h1>
+          <p class="text-lg mb-6" style="color: var(--accent);">高级设备管理工程师</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm" style="color: var(--fg-muted);">
+            <div class="info-item flex items-center gap-3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>男 / 29岁</span>
+            </div>
+            <div class="info-item flex items-center gap-3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span>134-7966-7987</span>
+            </div>
+            <div class="info-item flex items-center gap-3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span>991088352@qq.com</span>
+            </div>
+            <div class="info-item flex items-center gap-3">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>江西省吉安市</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Personal Advantages Section -->
+    <section class="card p-6 md:p-10 mb-8 reveal reveal-delay-1">
+      <h2 class="section-title font-serif text-xl font-semibold mb-6" style="color: var(--fg);">个人优势</h2>
+      <div class="space-y-4 text-sm md:text-base leading-relaxed" style="color: var(--fg-muted);">
+        <p>从事机械设备维护管理超10年，乐于学习市面上高精尖设备技术，拥抱AI及智能化。</p>
+        <p>对待工作认真负责，善于沟通、协调，有较强的组织能力与团队精神</p>
+        <p>活泼开朗、上进心强并善于学习总结，能不断提高自身的能力与综合素质</p>
+      </div>
+      
+      <!-- Skill tags -->
+      <div class="flex flex-wrap gap-2 mt-6">
+        <span class="tag">设备管理</span>
+        <span class="tag">异常分析</span>
+        <span class="tag">智能制造</span>
+        <span class="tag">团队管理</span>
+        <span class="tag">良率提升</span>
+        <span class="tag">改善增效</span>
+      </div>
+    </section>
+
+    <!-- Work Experience Section -->
+    <section class="card p-6 md:p-10 mb-8 reveal reveal-delay-2">
+      <h2 class="section-title font-serif text-xl font-semibold mb-8" style="color: var(--fg);">工作经历</h2>
+      
+      <div class="timeline">
+        <!-- Job 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="mb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+              <h3 class="font-semibold text-lg" style="color: var(--fg);">江西立讯智造有限公司</h3>
+              <span class="text-xs px-3 py-1 rounded-full" style="background: rgba(212, 168, 83, 0.15); color: var(--accent);">2017.07 - 至今</span>
+            </div>
+            <p style="color: var(--accent);">设备管理工程师</p>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-sm font-medium mb-2" style="color: var(--fg);">工作内容</h4>
+              <ul class="text-sm space-y-2 pl-4" style="color: var(--fg-muted); list-style-type: disc;">
+                <li>团队建设（新人招募/技能培训）</li>
+                <li>设备导入（设备方案评审/CT&良率优化/供应商资源整合）</li>
+                <li>工装治具导入（设计方案评审/上线异常跟进处理）</li>
+                <li>人员管理（工作任务调配/管理制度优化）</li>
+                <li>设备产能、良率提升（设备异常处理/问题点改善方案）</li>
+                <li>智能化专项（设备智联/系统集成式管理/AI）</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="text-sm font-medium mb-2" style="color: var(--fg);">工作业绩</h4>
+              <ul class="text-sm space-y-2 pl-4" style="color: var(--fg-muted); list-style-type: disc;">
+                <li>2017年被派往昆山学习A客户第一代TWS蓝牙制程，成功掌握自动点胶模组、UV喷射阀、HB焊接等设备原理及调试方法，深度了解耳机组装的制程工艺，并在江西厂区负责架设第一条量产线体。</li>
+                <li>2018-2019在江西工厂带领团队负责四条组立线体的设备，经过优化改善，将产线机故时长降低70%，同步对课内人员管理&培训，累计培训出20+设备工程师。</li>
+                <li>2020年因业务扩展前往深圳美律协助C客户旗舰TWS项目立项，在试制期间带领团队解决喷胶机、激光锡膏焊、喷锡球激光焊等难点设备，优化产品顶出治具、整机保压治具设计结构，制定了洗阀管理、备品管理等关键流程，让项目试制按期达成目标，并为美律设备团队培训至少10+名设备高级技师。</li>
+                <li>2021在东莞铵福瑞新厂区负责C客户中端TWS项目线体架设，带领设备团队从设备收货、组装、定位、调试，达成预定上线时间。</li>
+                <li>2021-2025在江西厂区负责Non-A项目，从现场的异常处置、人员调整，到PM主导、治具管理、改善报告等周边事项均有深度参与。</li>
+                <li>熟练掌握设备改善中“TPM”“设备内置质量”“智能制造”“精益LCIA”等要点。</li>
+                <li>2019年度所带团队获得荣誉称号“优秀团队”；2023年获得“优秀PM”、“年度最佳贡献”等称号；在2024年度获得部门“设备视觉专家”并担任“设备技能大赛主考官”及“质量体系QSA内审员”认证。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Job 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="mb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+              <h3 class="font-semibold text-lg" style="color: var(--fg);">协讯电子（吉安）有限公司</h3>
+              <span class="text-xs px-3 py-1 rounded-full" style="background: rgba(212, 168, 83, 0.15); color: var(--accent);">2015.06 - 2017.07</span>
+            </div>
+            <p style="color: var(--accent);">设备技术员</p>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <h4 class="text-sm font-medium mb-2" style="color: var(--fg);">工作内容</h4>
+              <ul class="text-sm space-y-2 pl-4" style="color: var(--fg-muted); list-style-type: disc;">
+                <li>现场非标设备维护保养</li>
+                <li>新产品上线准备工作</li>
+                <li>配合生产切换线设备调试</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="text-sm font-medium mb-2" style="color: var(--fg);">工作业绩</h4>
+              <ul class="text-sm space-y-2 pl-4" style="color: var(--fg-muted); list-style-type: disc;">
+                <li>负责新导入FP自动点胶组装模组看护，通过优化直振进料倾角、控制进料速度、工件配合间隙解决了因物料较小导致卡顿造成物料翻边不良。</li>
+                <li>负责点胶保压模组，通过优化胶头调整结构，可使用千分尺快捷调试胶头位置，减少了生技调试时间</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="card p-6 md:p-10 reveal reveal-delay-3">
+      <h2 class="section-title font-serif text-xl font-semibold mb-8" style="color: var(--fg);">学习经历</h2>
+      
+      <div class="grid gap-6">
+        <!-- Education -->
+        <div class="flex flex-col sm:flex-row gap-4 p-5 rounded-xl" style="background: rgba(212, 168, 83, 0.05); border: 1px solid rgba(212, 168, 83, 0.1);">
+          <div class="flex-shrink-0">
+            <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background: var(--accent);">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="2">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-2">
+              <h3 class="font-semibold" style="color: var(--fg);">西安电子科技大学</h3>
+              <span class="text-xs px-3 py-1 rounded-full" style="background: var(--border); color: var(--fg-muted);">2012.09 - 2016.06</span>
+            </div>
+            <p class="text-sm mb-1" style="color: var(--accent);">专科 / 机电一体化专业</p>
+          </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="text-center mt-12 py-6 text-sm" style="color: var(--fg-muted);">
+      <p>感谢您抽出宝贵时间阅读我的简历</p>
+    </footer>
+  </main>
+
+  <!-- Print Button -->
+  <button class="print-btn" onclick="window.print()" aria-label="打印简历" title="打印简历">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 6 2 18 2 18 9"/>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      <rect x="6" y="14" width="12" height="8"/>
+    </svg>
+  </button>
+
+  <script>
+    // Initialize particles
+    function initParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = 15;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        particle.style.animation = `float ${8 + Math.random() * 4}s ease-in-out infinite`;
+        container.appendChild(particle);
+      }
+    }
+
+    // Add float animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes float {
+        0%, 100% { 
+          transform: translate(0, 0); 
+          opacity: 0;
+        }
+        10% { opacity: 0.6; }
+        50% { 
+          transform: translate(${Math.random() > 0.5 ? '' : '-'}${20 + Math.random() * 30}px, -${50 + Math.random() * 50}px); 
+          opacity: 0.3;
+        }
+        90% { opacity: 0.6; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Scroll reveal animation
+    function initScrollReveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+      
+      reveals.forEach(el => observer.observe(el));
+    }
+
+    // Info items hover effect
+    function initHoverEffects() {
+      const infoItems = document.querySelectorAll('.info-item');
+      
+      infoItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+          const icon = this.querySelector('svg');
+          if (icon) {
+            icon.style.transform = 'scale(1.2)';
+            icon.style.color = '#d4a853';
+            icon.style.transition = 'all 0.3s ease';
+          }
+        });
+        
+        item.addEventListener('mouseleave', function() {
+          const icon = this.querySelector('svg');
+          if (icon) {
+            icon.style.transform = 'scale(1)';
+            icon.style.color = '';
+          }
+        });
+      });
+    }
+
+    // Timeline item animation on scroll
+    function initTimelineAnimation() {
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.style.opacity = '1';
+              entry.target.style.transform = 'translateX(0)';
+            }, index * 150);
+          }
+        });
+      }, { threshold: 0.2 });
+      
+      timelineItems.forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(-20px)';
+        item.style.transition = 'all 0.6s ease';
+        observer.observe(item);
+      });
+    }
+
+    // Initialize all
+    document.addEventListener('DOMContentLoaded', () => {
+      initParticles();
+      initScrollReveal();
+      initHoverEffects();
+      initTimelineAnimation();
+      
+      // Trigger initial reveal for visible elements
+      setTimeout(() => {
+        document.querySelectorAll('.reveal').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight) {
+            el.classList.add('active');
+          }
+        });
+      }, 100);
+    });
+
+    // Smooth scroll for any anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
